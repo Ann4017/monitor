@@ -4,10 +4,11 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"testing"
 	"time"
 )
 
-func main() {
+func Test(t *testing.T) {
 	h := C_http{}
 	d := C_db{}
 	s := C_ses{}
