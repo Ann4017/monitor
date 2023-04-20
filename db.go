@@ -20,13 +20,13 @@ type C_db struct {
 	pc_sql_rows *sql.Rows
 }
 
-func (c *C_db) DB_config(cfg_file interface{}, file_section string) error {
+func (c *C_db) DB_config(cfg_file interface{}, _s_file_section string) error {
 	file, err := ini.Load(cfg_file)
 	if err != nil {
 		return err
 	}
 
-	section := file.Section(file_section)
+	section := file.Section(_s_file_section)
 	c.s_user = section.Key("user").String()
 	c.s_pwd = section.Key("pwd").String()
 	c.s_host = section.Key("host").String()
@@ -49,13 +49,13 @@ func (c *C_db) SQL_connection() error {
 	return nil
 }
 
-func (c *C_db) Insert_db(table string, row1 string, row2 string, row3 string,
-	row4 string, row5 string, url string, status string, statusCode int, time string, error string) error {
+func (c *C_db) Insert_db(_s_table string, _s_row1 string, _s_row2 string, _s_row3 string,
+	_s_row4 string, _s_row5 string, _s_url string, _s_status string, _i_statusCode int, _s_time string, _s_error string) error {
 
 	query := fmt.Sprintf("insert into %s (%s, %s, %s, %s, %s) values (?, ?, ?, ?, ?)",
-		table, row1, row2, row3, row4, row5)
+		_s_table, _s_row1, _s_row2, _s_row3, _s_row4, _s_row5)
 
-	_, err := c.pc_sql_db.Exec(query, url, status, statusCode, time, error)
+	_, err := c.pc_sql_db.Exec(query, _s_url, _s_status, _i_statusCode, _s_time, _s_error)
 	if err != nil {
 		return err
 	}
@@ -63,8 +63,8 @@ func (c *C_db) Insert_db(table string, row1 string, row2 string, row3 string,
 	return nil
 }
 
-func (c *C_db) Select_db(status_code_col string, table string) error {
-	query := fmt.Sprintf("select * from %s where %s != ?", table, status_code_col)
+func (c *C_db) Select_db(_s_status_code_col string, _s_table string) error {
+	query := fmt.Sprintf("select * from %s where %s != ?", _s_table, _s_status_code_col)
 	rows, err := c.pc_sql_db.Query(query, 200)
 	if err != nil {
 		return err

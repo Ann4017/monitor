@@ -21,17 +21,17 @@ type C_ses struct {
 	s_body       string
 }
 
-func (c *C_ses) Init(region, access_key, secret_key string) {
-	c.s_region = region
-	c.s_access_Key = access_key
-	c.s_secret_key = secret_key
+func (c *C_ses) Init(_s_region, _s_access_key, _s_secret_key string) {
+	c.s_region = _s_region
+	c.s_access_Key = _s_access_key
+	c.s_secret_key = _s_secret_key
 }
 
-func (c *C_ses) Write_email(sender, recipient, subject, body string) {
-	c.s_sender = sender
-	c.s_recipient = recipient
-	c.s_subject = subject
-	c.s_body = body
+func (c *C_ses) Write_email(_s_sender, _s_recipient, _s_subject, _s_body string) {
+	c.s_sender = _s_sender
+	c.s_recipient = _s_recipient
+	c.s_subject = _s_subject
+	c.s_body = _s_body
 }
 
 func (c *C_ses) Set_config() error {
@@ -48,22 +48,22 @@ func (c *C_ses) Set_config() error {
 	return nil
 }
 
-func (c *C_ses) Send_email(client *ses.Client, sender, recipient, subject, body string) error {
+func (c *C_ses) Send_email(_pc_client *ses.Client, _s_sender, _s_recipient, _s_subject, _s_body string) error {
 	input := ses.SendEmailInput{
 		Destination: &types.Destination{
-			ToAddresses: []string{recipient},
+			ToAddresses: []string{_s_recipient},
 		},
 		Message: &types.Message{
 			Subject: &types.Content{
-				Data: aws.String(subject),
+				Data: aws.String(_s_subject),
 			},
 			Body: &types.Body{
 				Text: &types.Content{
-					Data: aws.String(body),
+					Data: aws.String(_s_body),
 				},
 			},
 		},
-		Source: aws.String(sender),
+		Source: aws.String(_s_sender),
 	}
 
 	_, err := c.pc_client.SendEmail(context.Background(), &input)
