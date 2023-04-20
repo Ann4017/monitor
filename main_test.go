@@ -57,8 +57,8 @@ func Test(t *testing.T) {
 		defer d.pc_sql_rows.Close()
 
 		if len(d.err_row) != 0 {
-			s.Init("ap-northeast-2", "AKIAVOZYFWFTBWEOBG7T",
-				"eHqPu4vSNraNS9IYNF7dnuKPI7vSSR8OXFuvzPyN")
+			s.Init("", "",
+				"")
 
 			s.Write_email("abh4017@naver.com", "abh4017@naver.com", "monitor test", "test")
 
