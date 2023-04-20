@@ -7,3 +7,23 @@
 2023/04/20 01:41:34 errer: sql: unknown driver "" (forgotten import?)
 2023/04/20 01:41:41 errer: sql: unknown driver "" (forgotten import?)
 2023/04/20 01:43:44 errer: sql: unknown driver "" (forgotten import?)
+2023/04/20 11:18:15 errer: sql: unknown driver "" (forgotten import?)
+2023/04/20 11:23:33 errer: sql: unknown driver "" (forgotten import?)
+2023/04/20 11:24:21 errer: sql: unknown driver "" (forgotten import?)
+2023/04/20 11:27:47 errer: sql: unknown driver "" (forgotten import?)
+2023/04/20 12:30:40 errer: sql: database is closed
+2023/04/20 12:31:36 errer: sql: database is closed
+2023/04/20 12:36:57 errer: Error 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ', , 0, , )' at line 1
+2023/04/20 12:39:15 errer: Error 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ', , 0, , )' at line 1
+2023/04/20 12:39:31 errer: Error 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ', , 0, , )' at line 1
+2023/04/20 12:39:42 errer: Error 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ', , 0, , )' at line 1
+2023/04/20 12:40:38 errer: Error 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ', , 0, , )' at line 1
+2023/04/20 12:41:59 errer: Error 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ', , 0, , )' at line 1
+2023/04/20 12:46:04 errer: Error 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ', , 0, , )' at line 1
+2023/04/20 12:46:22 errer: Error 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ', , 0, , )' at line 1
+2023/04/20 12:47:45 errer: Error 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ', , 0, , )' at line 1
+2023/04/20 12:50:12 errer: sql: database is closed
+2023/04/20 13:33:54 errer: Error 1146 (42S02): Table 'monitor.http' doesn't exist
+2023/04/20 13:51:18 errer: Error 1146 (42S02): Table 'monitor.http' doesn't exist
+2023/04/20 13:51:59 errer: Error 1366 (HY000): Incorrect integer value: 'status_code' for column 'status_code' at row 1
+2023/04/20 14:27:42 errer: Get "https://www.naver22.com/": dial tcp: lookup www.naver22.com: no such host

@@ -34,6 +34,7 @@ func Test(t *testing.T) {
 			log.Printf("errer: %v\n", err)
 			os.Exit(1)
 		}
+		defer d.pc_sql_db.Close()
 
 		err = d.SQL_connection()
 		if err != nil {
@@ -41,17 +42,19 @@ func Test(t *testing.T) {
 			os.Exit(1)
 		}
 
-		err = d.Insert_db("info", "URL", "status", "status_code", "time", "error")
+		err = d.Insert_db("http_server", "URL", "status", "status_code", "time", "error",
+			h.s_url, h.s_status, h.i_status_code, h.s_time, h.s_error)
 		if err != nil {
 			log.Printf("errer: %v\n", err)
 			os.Exit(1)
 		}
 
-		err = d.Select_db("status_code", "info")
+		err = d.Select_db("status_code", "http_server")
 		if err != nil {
 			log.Printf("errer: %v\n", err)
 			os.Exit(1)
 		}
+		defer d.pc_sql_rows.Close()
 
 		if len(d.err_row) != 0 {
 			s.Init("ap-northeast-2", "AKIAVOZYFWFTBWEOBG7T",
