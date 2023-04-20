@@ -22,7 +22,7 @@ func main() {
 	log.SetOutput(log_file)
 
 	for {
-		_, err := h.Get_http_status("https://www.google.com/")
+		_, err := h.Get_http_status("https://www.naver.com/")
 		if err != nil {
 			log.Printf("errer: %v\n", err)
 			os.Exit(1)
@@ -41,8 +41,8 @@ func main() {
 			os.Exit(1)
 		}
 
-		err = d.Insert_db("http_server", "URL", "status", "status_code", "time", "error")
-		// h.s_url, h.s_status, h.i_status_code, h.s_time, h.s_error)
+		err = d.Insert_db("http_server", "URL", "status", "status_code", "time", "error",
+			h.s_url, h.s_status, h.i_status_code, h.s_time, h.s_error)
 		if err != nil {
 			log.Printf("errer: %v\n", err)
 			os.Exit(1)
@@ -56,8 +56,8 @@ func main() {
 		defer d.pc_sql_rows.Close()
 
 		if len(d.err_row) != 0 {
-			s.Init("ap-northeast-2", "AKIAVOZYFWFTBWEOBG7T",
-				"eHqPu4vSNraNS9IYNF7dnuKPI7vSSR8OXFuvzPyN")
+			s.Init("", "",
+				"")
 
 			s.Write_email("abh4017@naver.com", "abh4017@naver.com", "monitor test", "test")
 

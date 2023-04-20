@@ -49,18 +49,13 @@ func (c *C_db) SQL_connection() error {
 	return nil
 }
 
-var ht = &C_http{}
-
-//row4 string, row5 string, url string, status string, statusCode int, time string, error string
-
 func (c *C_db) Insert_db(table string, row1 string, row2 string, row3 string,
-	row4 string, row5 string) error {
+	row4 string, row5 string, url string, status string, statusCode int, time string, error string) error {
 
 	query := fmt.Sprintf("insert into %s (%s, %s, %s, %s, %s) values (?, ?, ?, ?, ?)",
 		table, row1, row2, row3, row4, row5)
 
-	// _, err := c.pc_sql_db.Exec(query, url, status, statusCode, time, error)
-	_, err := c.pc_sql_db.Exec(query, ht.s_url, ht.s_status, ht.i_status_code, ht.s_time, ht.s_error)
+	_, err := c.pc_sql_db.Exec(query, url, status, statusCode, time, error)
 	if err != nil {
 		return err
 	}
