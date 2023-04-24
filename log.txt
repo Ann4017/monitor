@@ -28,3 +28,4 @@
 2023/04/20 13:51:59 errer: Error 1366 (HY000): Incorrect integer value: 'status_code' for column 'status_code' at row 1
 2023/04/20 14:27:42 errer: Get "https://www.naver22.com/": dial tcp: lookup www.naver22.com: no such host
 2023/04/20 15:23:19 errer: Error 1146 (42S02): Table 'monitor.http_status_log' doesn't exist
+2023/04/21 11:00:06 errer: Get "http://localhost:8080/": dial tcp [::1]:8080: connectex: No connection could be made because the target machine actively refused it.

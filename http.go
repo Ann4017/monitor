@@ -14,11 +14,14 @@ type C_http struct {
 	s_error       string
 }
 
-func (c *C_http) Get_http_status(_s_url string) (_i_status_code int, err error) {
-	resp, err := http.Get(_s_url)
+func (c *C_http) Get_http_status(_s_url string) (err error) {
+	client := &http.Client{
+		Timeout: time.Duration(time.Second * 10),
+	}
+
+	resp, err := client.Get(_s_url)
 	if err != nil {
-		c.s_error = err.Error()
-		return 0, err
+		return err
 	}
 
 	defer resp.Body.Close()
@@ -34,5 +37,5 @@ func (c *C_http) Get_http_status(_s_url string) (_i_status_code int, err error) 
 	fmt.Println(c.s_time)
 	fmt.Println(c.s_error)
 
-	return c.i_status_code, nil
+	return nil
 }
