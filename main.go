@@ -72,7 +72,7 @@ func main() {
 			fmt.Printf("%d \n", v)
 		}
 
-		if len(d.err_row) == 0 {
+		if len(d.err_row) != 0 {
 			s.Init("ap-northeast-2", "AKIAVOZYFWFTBWEOBG7T",
 				"eHqPu4vSNraNS9IYNF7dnuKPI7vSSR8OXFuvzPyN")
 			// (email) 보내는 사람, 받는 사람, 제목, 내용 입력

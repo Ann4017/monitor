@@ -14,13 +14,14 @@ type C_http struct {
 	s_error       string
 }
 
-func (c *C_http) Get_http_status(_s_url string) (err error) {
+func (c *C_http) Get_http_status(_s_url string) error {
 	client := &http.Client{
-		Timeout: time.Duration(time.Second * 10),
+		Timeout: time.Duration(time.Second * 15),
 	}
 
 	resp, err := client.Get(_s_url)
 	if err != nil {
+		c.s_error = err.Error()
 		return err
 	}
 
@@ -35,7 +36,6 @@ func (c *C_http) Get_http_status(_s_url string) (err error) {
 	fmt.Println(c.i_status_code)
 	fmt.Println(c.s_status)
 	fmt.Println(c.s_time)
-	fmt.Println(c.s_error)
 
 	return nil
 }
