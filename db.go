@@ -3,6 +3,8 @@ package main
 import (
 	"database/sql"
 	"fmt"
+	"strconv"
+	"strings"
 
 	_ "github.com/go-sql-driver/mysql"
 	"gopkg.in/ini.v1"
@@ -65,13 +67,46 @@ func (c *C_db) SQL_disconnect() error {
 	return nil
 }
 
-func (c *C_db) Insert_db(_s_table string, _s_row1 string, _s_row2 string, _s_row3 string, _s_row4 string, _s_row5 string,
-	_s_url string, _s_status string, _i_statusCode int, _s_time string, _s_error string) error {
+func (c *C_db) Create_db() error {
+	create_db_query := "create database if not exists monitor"
+	_, err := c.pc_sql_db.Exec(create_db_query)
+	if err != nil {
+		return err
+	}
 
-	query := fmt.Sprintf("insert into %s (%s, %s, %s, %s, %s) values (?, ?, ?, ?, ?)",
-		_s_table, _s_row1, _s_row2, _s_row3, _s_row4, _s_row5)
+	var table string
+	row := c.pc_sql_db.QueryRow(`select table_name from information_schema.tables 
+	where table_name like "http_server%" order by table_name desc limit 1`)
+	if err := row.Scan(&table); err != nil {
+		if err == sql.ErrNoRows {
+			table = "http_server_1"
+		} else {
+			return err
+		}
+	} else {
+		last_num, err := strconv.Atoi(strings.TrimPrefix(table, "http_server_"))
+		if err != nil {
+			return err
+		}
+		table = fmt.Sprintf("http_server_%d", last_num+1)
+	}
 
-	_, err := c.pc_sql_db.Exec(query, _s_url, _s_status, _i_statusCode, _s_time, _s_error)
+	create_table_query := fmt.Sprintf(`create table if not exists %s (
+		id int not null auto_increment primary key
+	);`, table)
+	_, err = c.pc_sql_db.Exec(create_table_query)
+	if err != nil {
+		return err
+	}
+
+	add_col_query := fmt.Sprintf(`alter table %s add (
+		url varchar(255) not null,
+		status char(50) not null,
+		status_code int(10) not null,
+		time varchar(50) not null,
+		error varchar(255) default null
+	)`, table)
+	_, err = c.pc_sql_db.Exec(add_col_query)
 	if err != nil {
 		return err
 	}
@@ -79,20 +114,59 @@ func (c *C_db) Insert_db(_s_table string, _s_row1 string, _s_row2 string, _s_row
 	return nil
 }
 
-func (c *C_db) Select_db(_s_status_code_col string, _s_table string) error {
-	query := fmt.Sprintf("select * from %s where %s != ?", _s_table, _s_status_code_col)
-	rows, err := c.pc_sql_db.Query(query, 200)
+func (c *C_db) Insert_data(_s_table string, _s_url string, _s_status string, _i_status_code int, _s_time string, _s_err string) error {
+	add_row_query := fmt.Sprintf(`insert into %s (url, status, status_code, time, error) 
+	values (?, ?, ?, ?, ?)`, _s_table)
+
+	_, err := c.pc_sql_db.Exec(add_row_query, _s_url, _s_status, _i_status_code, _s_time, _s_err)
 	if err != nil {
 		return err
 	}
 
-	c.pc_sql_rows = rows
+	return nil
+}
+
+func (c *C_db) Select_data() error {
+	tables := []string{}
+	rows, err := c.pc_sql_db.Query(`select table_name from information_schema.tables 
+	where table_schema = "monitor"`)
+	if err != nil {
+		return err
+	}
+	defer rows.Close()
 
 	for rows.Next() {
-		err := rows.Scan(c.err_row)
-		if err == sql.ErrNoRows {
-			return nil
+		var table string
+		err := rows.Scan(&table)
+		if err != nil {
+			return err
 		}
+		tables = append(tables, table)
+	}
+
+	for _, table := range tables {
+		query := fmt.Sprintf("select * from %s where status_code != ?", table)
+		rows, err := c.pc_sql_db.Query(query, 200)
+		if err != nil {
+			return err
+		}
+
+		c.pc_sql_rows = rows
+
+		for rows.Next() {
+			err := rows.Scan(c.err_row)
+			if err == sql.ErrNoRows {
+				return nil
+			}
+		}
+	}
+
+	return nil
+}
+
+func (c *C_db) Close_rows() error {
+	if c.pc_sql_rows != nil {
+		return c.pc_sql_rows.Close()
 	}
 
 	return nil
