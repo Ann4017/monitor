@@ -67,11 +67,11 @@ func (c *C_db) SQL_disconnect() error {
 	return nil
 }
 
-func (c *C_db) Create_db() error {
+func (c *C_db) Create_db() (string, error) {
 	create_db_query := "create database if not exists monitor"
 	_, err := c.pc_sql_db.Exec(create_db_query)
 	if err != nil {
-		return err
+		return "", err
 	}
 
 	var table string
@@ -81,14 +81,15 @@ func (c *C_db) Create_db() error {
 		if err == sql.ErrNoRows {
 			table = "http_server_1"
 		} else {
-			return err
+			return "", err
 		}
 	} else {
 		last_num, err := strconv.Atoi(strings.TrimPrefix(table, "http_server_"))
 		if err != nil {
-			return err
+			return "", err
 		}
 		table = fmt.Sprintf("http_server_%d", last_num+1)
+		return table, nil
 	}
 
 	create_table_query := fmt.Sprintf(`create table if not exists %s (
@@ -96,7 +97,7 @@ func (c *C_db) Create_db() error {
 	);`, table)
 	_, err = c.pc_sql_db.Exec(create_table_query)
 	if err != nil {
-		return err
+		return "", err
 	}
 
 	add_col_query := fmt.Sprintf(`alter table %s add (
@@ -108,10 +109,10 @@ func (c *C_db) Create_db() error {
 	)`, table)
 	_, err = c.pc_sql_db.Exec(add_col_query)
 	if err != nil {
-		return err
+		return "", err
 	}
 
-	return nil
+	return table, nil
 }
 
 func (c *C_db) Insert_data(_s_table string, _s_url string, _s_status string, _i_status_code int, _s_time string, _s_err string) error {

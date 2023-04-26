@@ -12,6 +12,7 @@ type C_http struct {
 	i_status_code int
 	s_time        string
 	s_error       string
+	pc_response   *http.Response
 }
 
 func (c *C_http) Get_http_status(_s_url string) error {
@@ -25,7 +26,7 @@ func (c *C_http) Get_http_status(_s_url string) error {
 		return err
 	}
 
-	defer resp.Body.Close()
+	c.pc_response = resp
 
 	c.s_url = _s_url
 	c.i_status_code = resp.StatusCode
@@ -36,6 +37,14 @@ func (c *C_http) Get_http_status(_s_url string) error {
 	fmt.Println(c.i_status_code)
 	fmt.Println(c.s_status)
 	fmt.Println(c.s_time)
+
+	return nil
+}
+
+func (c *C_http) Close_resp_body() error {
+	if c.pc_response != nil {
+		return c.pc_response.Body.Close()
+	}
 
 	return nil
 }
